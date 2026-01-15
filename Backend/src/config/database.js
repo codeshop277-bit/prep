@@ -1,11 +1,4 @@
-// require("dotenv").config();
-const path = require('path');
-require('dotenv').config({
-  path: path.resolve(__dirname, '../../.env'),
-});
-
-const {Pool} = require("pg");
-
+const { Pool } = require("pg");
 // const pool = new Pool({
 //     host: process.env.DB_HOST,
 //     port: process.env.DB_PORT,
@@ -13,14 +6,28 @@ const {Pool} = require("pg");
 //     password: process.env.DB_PASSWORD,
 //     database: process.env.DB_NAME
 // })
+let pool;
+const connectDB = async () => {
+    try {
+         pool = new Pool({
+            connectionString: process.env.DB_URL
+        });
+        await pool.query("SELECT 1")
+        console.log('✅ Postgres DB connection is alive');
+    }catch(err){
+        console.error(`DB connection failed ${err}`)
+        process.exit(1);
+    }
+};
 
-const pool = new Pool({
-    connectionString: process.env.DB_URL
-})
-console.log(process.env.DB_URL)
+const getPool = () => {
+    if(!pool){
+        throw new Error("Database not intialized");
+    }
+    return pool;
+}
 
-pool.on('connect', () => {
-    console.log('Postgress db connection is alive')
-});
-
-module.exports = pool;
+module.exports = {
+    connectDB,
+    getPool
+};
