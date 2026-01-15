@@ -12,6 +12,14 @@ const userRoutes = require("./routes/user.route");
 
 app.use('/api/users', userRoutes);
 
+app.get('/health', (req, res) => {
+    res.status(200).json({
+        status: 'OK',
+        message: 'Connection Live',
+        uptime: process.uptime()
+    })
+});
+
 const errorHandler = require('./middleware/error.middleware');
 app.use(errorHandler);
 module.exports = app;
