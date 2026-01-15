@@ -24,7 +24,26 @@ const postUserController = async (req, res, next) => {
         next(err);
     }
 };
+
+const deleteUserController = async (req, res, next) => {
+    try{
+        const { id } = req.params;
+        const user = await userService.deleteUserService(id);
+
+        if(!user){
+            return next(new Error("User not found", 404))
+        }
+        res.status(200).json({
+            message: 'User Deleted Successfully',
+            data: user
+        })
+    }catch(err){
+        next(err);
+    }
+};
+
 module.exports = {
     getAllUsersController,
-    postUserController
+    postUserController,
+    deleteUserController
 }

@@ -9,9 +9,14 @@ const getAllUsersService = async () => {
 const createUserService = async (userData) => {
     const users = await userRepository.createUser(userData);
     return users;
+};
+
+const deleteUserService = async(id) => {
+    return await userRepository.deleteUser(id);
 }
 
 module.exports = {
     getAllUsersService,
-    createUserService
+    createUserService,
+    deleteUserService
 }

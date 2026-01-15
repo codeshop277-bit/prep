@@ -7,4 +7,7 @@ const userDto = require("../dto/user.dto");
 router.get('/', userController.getAllUsersController);
 
 router.post('/add', validate(userDto.createUserDto), userController.postUserController);
+
+router.delete('/delete/:id', userController.deleteUserController);
+
 module.exports = router;
