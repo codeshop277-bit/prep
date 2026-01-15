@@ -12,6 +12,19 @@ const getAllUsersController = async (req, res, next) => {
     }
 };
 
+const postUserController = async (req, res, next) => {
+    try{
+        const user = await userService.createUserService(req.body);
+
+        res.status(201).json({
+            message: "User created",
+            data: user
+        });
+    }catch(err){
+        next(err);
+    }
+};
 module.exports = {
-    getAllUsersController
+    getAllUsersController,
+    postUserController
 }

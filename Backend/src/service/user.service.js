@@ -6,6 +6,12 @@ const getAllUsersService = async () => {
     return users;
 };
 
+const createUserService = async (userData) => {
+    const users = await userRepository.createUser(userData);
+    return users;
+}
+
 module.exports = {
-    getAllUsersService
+    getAllUsersService,
+    createUserService
 }
