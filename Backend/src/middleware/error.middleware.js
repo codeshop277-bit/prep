@@ -9,5 +9,31 @@ const errorHandler = (err, req, res, next) => {
         message
     });
 };
+//Custom Erro handler
+class AppError extends Error {
+  constructor(message, statusCode) {
+    super(message)
+    this.statusCode = statusCode
+  }
+}
+class ValidationError extends AppError {
+  constructor(message) {
+    super(message, 400)
+  }
+}
 
-module.exports = errorHandler;
+class AuthError extends AppError {
+  constructor(message) {
+    super(message, 401)
+  }
+}
+// throw new ValidationError('Email is invalid')
+// throw new AuthError('Token expired')
+
+//throw new AppError('User not found', 404)
+module.exports = {
+    errorHandler,
+    ValidationError,
+    AuthError,
+    AppError
+};
