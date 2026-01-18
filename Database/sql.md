@@ -87,3 +87,43 @@ emp1.employee_id +1 = emp2.employee_id;
 # JOINING MULTIPLE TABLES
     SELECT * from employee_demographics AS dem  INNER JOIN employee_salary AS sal
 	ON dem.employee_id = sal.employee_id INNER JOIN parks_departments AS dep ON sal.dept_id = dep.department_id;
+
+# UNION - Clubs rows
+SELECT first_name, gender FROM employee_demographics 
+UNION 
+SELECT last_name, occupation FROM employee_salary;
+
+SELECT first_name, gender FROM employee_demographics 
+UNION ALL
+SELECT last_name, occupation FROM employee_salary;
+ALL- includes duplicates    
+
+SELECT first_name, last_name, 'OLD MAN' AS LABEL FROM employee_demographics
+WHERE age >= 50 AND gender = 'Male'
+UNION
+SELECT first_name, last_name, 'OLD LADY' AS LABEL FROM employee_demographics
+WHERE age > 40 AND gender = 'Female' UNION
+SELECT first_name, last_name, 'HIGHLY PAID' AS LABEL FROM employee_salary
+WHERE salary > 70000 ORDER BY first_name, last_name;
+
+# STRING Functions
+LENGTH - SELECT first_name, LENGTH(first_name) AS LEN from employee_demographics
+UPPER - SELECT first_name, UPPER(first_name) AS Up from employee_demographics
+LOWER - SELECT first_name, LOWER(first_name) AS Low from employee_demographics
+TRIM - Removes leading and trailing whitespaces
+LTRIM - Removes only leading whitespaces
+RTRIM - Removes only trailing whitespaces
+LEFT - Restricts to specified char limit from left
+SELECT first_name, LEFT(first_name, 2) AS Trim from employee_demographics
+RIGHT - SImilar to left but restricts from right
+SUB STRING - similar to js, starts trimming from mentioned index and count 
+SELECT first_name, SUBSTRING(first_name, 3,2) AS Trim from employee_demographics
+3- starting index; 2 - no of chars
+REPLACE - SELECT first_name, REPLACE(first_name, 'A', 'z') AS Repla from employee_demographics
+
+LOCATE only in sql
+SELECT first_name, LOCATE('a', first_name) AS Repla from employee_demographics
+In postgress
+SELECT first_name, POSITION('a' IN first_name) AS Repla from employee_demographics
+
+CONCAT - SELECT first_name, last_name, CONCAT(first_name, ' ', last_name) AS Con from employee_demographics
