@@ -127,3 +127,28 @@ In postgress
 SELECT first_name, POSITION('a' IN first_name) AS Repla from employee_demographics
 
 CONCAT - SELECT first_name, last_name, CONCAT(first_name, ' ', last_name) AS Con from employee_demographics
+
+# CASE Statements
+SELECT first_name, last_name, 
+CASE	
+	WHEN age <= 30  THEN 'Young'
+	END
+from employee_demographics
+
+SELECT first_name, last_name, age,
+CASE	
+	WHEN age <= 30  THEN 'Young'
+	WHEN age >=50 THEN 'OLD'
+	WHEN age  BETWEEN 31 AND 49 THEN 'Spot ON'
+	END AS age_bracket
+from employee_demographics
+
+SELECT first_name, last_name,  dept_id, salary,
+CASE	
+	WHEN salary<=50000  THEN (salary * 1.05 )
+	WHEN salary>50000  THEN (salary * 1.07 )
+	END AS revised_salary,
+CASE 
+	WHEN dept_id = 6 THEN (salary * 1.10 )
+END AS bonus
+from employee_salary
