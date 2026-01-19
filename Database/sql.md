@@ -152,3 +152,51 @@ CASE
 	WHEN dept_id = 6 THEN (salary * 1.10 )
 END AS bonus
 from employee_salary
+
+# SUBQueries
+SELECT * FROM employee_demographics WHERE employee_id  IN(
+SELECT employee_id FROM employee_salary WHERE dept_id=1
+);
+we can have only one column in subquery
+
+SELECT first_name, salary, (SELECT AVG(salary) FROM employee_salary) FROM employee_salary;
+SELECT * FROM (SELECT gender, AVG(age), MAX(age), COUNT(age) FROM employee_demographics GROUP BY gender)
+
+# Window functions
+OVER() - OVER(PARTITION) - initalizes as window function
+This keeps all rows and adds the average as an additional column to each row.
+
+SELECT dem.first_name, dem.last_name, dem.gender, AVG(salary) OVER(PARTITION BY gender) FROM employee_demographics dem JOIN employee_salary sal ON dem.employee_id = sal.employee_id
+
+SELECT dem.first_name, dem.last_name, dem.gender, ROW_NUMBER() OVER(PARTITION BY gender) FROM employee_demographics dem JOIN employee_salary sal ON dem.employee_id = sal.employee_id
+
+RANk() raank rows based on values will have duplicates. If noth row are same rank ex: 5 then next rank will be 7
+
+DENSE_RANK() raank rows based on values will have duplicates. If noth row are same rank ex: 5 then next rank will be 6
+SELECT dem.first_name, dem.last_name, dem.gender,
+ROW_NUMBER() OVER(PARTITION BY gender ORDER BY salary DESC),
+RANK() OVER(PARTITION BY gender ORDER BY salary DESC),
+DENSE_RANK() OVER(PARTITION BY gender ORDER BY salary DESC)
+FROM employee_demographics dem JOIN employee_salary sal ON dem.employee_id = sal.employee_id
+
+# Common Table Expression
+Naming ans resusing subquery
+WITH CTE_EXAMPLE (Abg_salary) AS(
+SELECT gender, avg(salary) FROM employee_demographics dem JOIN employee_salary sal ON dem.employee_id = sal.employee_id GROUP BY gender
+)
+SELECT * FROM CTE_EXAMPLE
+Can also join two CTE
+
+# Temp Tables
+Lives in current memroy
+CREATE TEMPORARY TABLE temp_table2(
+first_name varchar(50),
+last_name varchar(50),
+movie varchar(100)
+);
+SELECT * FROM temp_table2;
+
+CREATE TEMPORARY TABLE salary_over_50k AS
+SELECT * FROM employee_salary WHERE salary >=50000;
+
+SELECT * FROM salary_over_50k
