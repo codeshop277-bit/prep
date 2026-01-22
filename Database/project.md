@@ -21,3 +21,18 @@ DELETE * FROM duplicates WHERE row_num >1;
 
 Or create one more table staging2 and assign row_num as column while table creation.
 This will ensure duplicates will have row_num>1 then delete it.
+
+# Standardize data 
+UPDATE layoff_staging SET company = TRIM(company)
+
+Similary can clear white spaces for any columns
+
+UPDATE layoff_staging SET industry = 'Crypto' WHERE industry LIKE 'Cryot%';
+for updating/grouping duplicate values
+
+TRIM(TRAILING '.' FROM country)
+
+SELECT `date`, STR_TO_DATE(`date`, '%d%m%y')
+UPDATE layoff_staging SET `date`= STR_TO_DATE(`date`, '%d%m%y')
+
+ALTER TABLE layoff_staging MODIFY COLUMN `date` DATE
