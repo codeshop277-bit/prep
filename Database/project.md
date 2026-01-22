@@ -36,3 +36,17 @@ SELECT `date`, STR_TO_DATE(`date`, '%d%m%y')
 UPDATE layoff_staging SET `date`= STR_TO_DATE(`date`, '%d%m%y')
 
 ALTER TABLE layoff_staging MODIFY COLUMN `date` DATE
+
+# NULL/BLANK Values
+
+SELECT * FROM layout_staging WHERE total_laid_off IS NULL AND percentgae_laid_off IS NULL;
+
+UPDATE layout_staging SET industry = NULL WHERE industry = ''
+
+UPDATE layout_staging t1 JOIN layout_staging t2
+ON t1.company  = t2.company SET t1.industry = t2.industry 
+WHERE t1.industry is NULL AND t2.industry is NOT NULL;
+
+DELETE FROM layout_staging WHERE total_laid_off IS NULL AND percentgae_laid_off IS NULL
+
+ALTER TABLE layout_staging DROP COLUMN row_num;
