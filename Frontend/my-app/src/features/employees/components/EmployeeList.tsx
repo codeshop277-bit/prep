@@ -36,30 +36,22 @@ export function EmployeeList() {
           </tr>
         </thead>
         <tbody>
-          {employees.map((employee) => (
-            <tr key={employee.id} className="hover:bg-gray-50">
+          {employees.map((employee, index) => (
+            <tr key={index} className="hover:bg-gray-50">
               <td className="px-6 py-4 text-sm text-gray-900 border-b">
-                {employee.name}
+                {employee.first_name}
               </td>
               <td className="px-6 py-4 text-sm text-gray-600 border-b">
-                {employee.email}
+                {employee.last_name}
               </td>
               <td className="px-6 py-4 text-sm text-gray-600 border-b">
-                {employee.position}
+                {employee.occupation}
+              </td>
+               <td className="px-6 py-4 text-sm text-gray-600 border-b">
+                {employee.salary}
               </td>
               <td className="px-6 py-4 text-sm text-gray-600 border-b">
-                {employee.department}
-              </td>
-              <td className="px-6 py-4 text-sm border-b">
-                <span
-                  className={`px-2 py-1 rounded-full text-xs font-medium ${
-                    employee.status === 'active'
-                      ? 'bg-green-100 text-green-800'
-                      : 'bg-gray-100 text-gray-800'
-                  }`}
-                >
-                  {employee.status}
-                </span>
+                {employee.dept_id}
               </td>
             </tr>
           ))}

@@ -1,16 +1,14 @@
 // features/employees/types/employee.types.ts
 
 export interface Employee {
-  id: string;
-  name: string;
-  email: string;
-  position: string;
-  department: string;
-  joinDate: string;
-  status: 'active' | 'inactive';
+  employee_id: Number;
+  first_name: string;
+  last_name: string;
+  occupation: string;
+  salary: string;
+  dept_id: string;
 }
 
 export interface EmployeesResponse {
-  data: Employee[];
-  total: number;
+  employee: Employee[];
 }

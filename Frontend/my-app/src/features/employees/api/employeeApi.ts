@@ -3,7 +3,7 @@
 import type { Employee, EmployeesResponse } from '../types/employee.types';
 
 export async function getEmployees(): Promise<Employee[]> {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/employees`, {
+  const response = await fetch(`${'http://localhost:3001/employee/list'}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -17,5 +17,5 @@ export async function getEmployees(): Promise<Employee[]> {
   }
 
   const data: EmployeesResponse = await response.json();
-  return data.data;
+  return data.employee;
 }
