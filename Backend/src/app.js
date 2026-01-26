@@ -4,12 +4,18 @@ const dotenv = require("dotenv");
 dotenv.config(); //Load env variables
 
 const app = express();
+const cors = require("cors");
+
 
 app.use(express.json()); //parses application/json
 app.use(express.urlencoded({extended: true})); // parses application/x-www-form-urlencoded
 
 const userRoutes = require("./routes/user.route");
 const employeeRoutes = require("./routes/employee.route");
+app.use(cors({
+  origin: 'http://localhost:3000',
+  //credentials: true
+}));
 
 app.use('/api/users', userRoutes);
 app.use('/employee', employeeRoutes);
