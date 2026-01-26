@@ -1,8 +1,8 @@
-import Navigation from "./components/Navigation";
-import HeroSection from ".//components/HeroSection";
-import DashboardCards from ".//components/DashboardCards";
-import FeaturesSection from ".//components/FeaturesSection";
-import EmployeeInsights from ".//components/EmployeeInsights";
+import Navigation from "../components/Navigation";
+import HeroSection from "../components/HeroSection";
+import DashboardCards from "..//components/DashboardCards";
+import FeaturesSection from "..//components/FeaturesSection";
+import EmployeeInsights from "..//components/EmployeeInsights";
 
 export default function Home() {
   return (
