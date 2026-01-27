@@ -5,7 +5,11 @@ const getAllEmployeeService = async () => {
     //Business Logic;
     return employees;
 };
-
+const postEmployeeService = async (payload) => {
+    const post = await employeeRepository.postEmployee(payload);
+    return post;
+}
 module.exports={
-    getAllEmployeeService
+    getAllEmployeeService,
+    postEmployeeService
 } 
