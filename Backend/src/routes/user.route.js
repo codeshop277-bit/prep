@@ -10,4 +10,5 @@ router.post('/add', validate(userDto.createUserDto), userController.postUserCont
 
 router.delete('/delete/:id', userController.deleteUserController);
 
+router.post('/login', userController.loginUserController)
 module.exports = router;

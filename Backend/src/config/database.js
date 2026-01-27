@@ -10,7 +10,7 @@ let pool;
 const connectDB = async () => {
     try {
          pool = new Pool({
-            connectionString: process.env.DB_OFFICE_URL
+            connectionString: process.env.DB_URL
         });
         await pool.query("SELECT 1")
         console.log('✅ Postgres DB connection is alive');

@@ -1,5 +1,6 @@
+const jwt = require("jsonwebtoken");
 const userService = require('../service/user.service');
-
+const bcrypt = require("bcrypt");
 const asyncHandler = fn =>
     (req, res, next) =>
         Promise.resolve(fn(req, res, next)).catch(next)
@@ -14,7 +15,14 @@ const getAllUsersController = asyncHandler(async (req, res, next) => {
 
 const postUserController = async (req, res, next) => {
     try {
-        const user = await userService.createUserService(req.body);
+        console.log(req.body)
+
+        const hashed = await bcrypt.hash(req.body.password, 12);
+        const {name, email} = req.body
+        const payload = {
+            name, email, password: hashed
+        }
+        const user = await userService.createUserService(payload);
 
         res.status(201).json({
             message: "User created",
@@ -41,9 +49,37 @@ const deleteUserController = async (req, res, next) => {
         next(err);
     }
 };
+const loginUserController = async (req, res, body) => {
+    const { email, password } = req.body;
+    const user = await userService.loginUserService(email);
+    if(user.length === 0){
+        return res.send(400).json({
+            message: "Invalid credentials"
+        })
+    }
+    const isValid = await bcrypt.compare(password, user[0].password);
+    if(!isValid){
+        return res.send(400).json({
+            message: "Invalid credentials"
+        })
+    }
+    const userData = user[0]
+    const token = jwt.sign({
+        id: userData.id,
+        name: userData.name,
+        role: "employee" 
+    }, process.env.JWT_SECRET, {expiresIn: process.env.JWT_EXPIRES_IN})
+      const { password: _, ...safeUser } = userData;
 
+    res.json({
+      message: "Login successful",
+      token,
+      user: safeUser
+    });
+}
 module.exports = {
     getAllUsersController,
     postUserController,
-    deleteUserController
+    deleteUserController,
+    loginUserController
 }

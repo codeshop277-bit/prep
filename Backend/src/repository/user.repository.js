@@ -18,6 +18,13 @@ const createUser = async ({name, email, password}) => {
     return result;
 };
 
+const loginUser = async (email) => {
+    const pool = getPool();
+    const query = "SELECT * FROM users WHERE email = $1"
+    const result = await pool.query(query, [email]);
+    return result.rows
+}
+
 const deleteUser = async (id) => {
     const pool = getPool();
     const query = `
@@ -32,5 +39,6 @@ const deleteUser = async (id) => {
 module.exports = {
     findAllUsers,
     createUser,
-    deleteUser
+    deleteUser,
+    loginUser
 };
