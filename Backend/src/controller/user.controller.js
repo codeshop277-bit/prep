@@ -18,7 +18,7 @@ const postUserController = async (req, res, next) => {
         console.log(req.body)
 
         const hashed = await bcrypt.hash(req.body.password, 12);
-        const {name, email} = req.body
+        const { name, email } = req.body
         const payload = {
             name, email, password: hashed
         }
@@ -52,13 +52,13 @@ const deleteUserController = async (req, res, next) => {
 const loginUserController = async (req, res, body) => {
     const { email, password } = req.body;
     const user = await userService.loginUserService(email);
-    if(user.length === 0){
+    if (user.length === 0) {
         return res.send(400).json({
             message: "Invalid credentials"
         })
     }
     const isValid = await bcrypt.compare(password, user[0].password);
-    if(!isValid){
+    if (!isValid) {
         return res.send(400).json({
             message: "Invalid credentials"
         })
@@ -67,15 +67,27 @@ const loginUserController = async (req, res, body) => {
     const token = jwt.sign({
         id: userData.id,
         name: userData.name,
-        role: "employee" 
-    }, process.env.JWT_SECRET, {expiresIn: process.env.JWT_EXPIRES_IN})
-      const { password: _, ...safeUser } = userData;
+        role: "employee"
+    }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN })
+    const refreshToken = jwt.sign({
+        id: userData.id,
+        name: userData.name,
+        role: "employee"
+    }, process.env.REFRESH_JWT_SECRET, { expiresIn: process.env.REFRESH_JWT_EXPIRES_IN })
+    const { password: _, ...safeUser } = userData;
 
     res.json({
-      message: "Login successful",
-      token,
-      user: safeUser
+        message: "Login successful",
+        token,
+        user: safeUser,
     });
+    res.cookie("refreshToken", refreshToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "strict",
+        path: "/refresh"
+    });
+
 }
 module.exports = {
     getAllUsersController,
