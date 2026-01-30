@@ -10,5 +10,7 @@ router.post('/add', validate(userDto.createUserDto), userController.postUserCont
 
 router.delete('/delete/:id', userController.deleteUserController);
 
-router.post('/login', userController.loginUserController)
+router.post('/login', userController.loginUserController);
+
+router.post('/refresh', userController.refreshTokenController)
 module.exports = router;

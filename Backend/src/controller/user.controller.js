@@ -89,9 +89,23 @@ const loginUserController = async (req, res, body) => {
     });
 
 }
+const refreshTokenController = async (req, res, next) => {
+    const { refreshToken } = req.cookies;
+    if(!refreshToken){
+        return res.status(401).json({message: "No refresh token provided"})
+    }
+    jwt.verify(refreshToken, process.env.REFRESH_JWT_SECRET, (err, decoded) => {
+        if(err){
+            return res.status(403).json({message: "Invalid refresh token"})
+        }
+        const newToken = jwt.sign({id: decoded.id, name: decoded.name, role: 'employee'}, process.env.JWT_SECRET, {expiresIn: process.env.JWT_EXPIRES_IN});
+        res.json({accessToken: newToken})
+    });
+}
 module.exports = {
     getAllUsersController,
     postUserController,
     deleteUserController,
-    loginUserController
+    loginUserController,
+    refreshTokenController
 }
