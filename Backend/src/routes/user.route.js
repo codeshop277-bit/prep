@@ -3,8 +3,8 @@ const router = express.Router();
 const userController = require('../controller/user.controller');
 const validate = require("../middleware/validate.middleware");
 const userDto = require("../dto/user.dto");
-
-router.get('/', userController.getAllUsersController);
+const authenticate  = require("../middleware/validate.middleware").authenticate;
+router.get('/', authenticate, userController.getAllUsersController);
 
 router.post('/add', validate(userDto.createUserDto), userController.postUserController);
 
